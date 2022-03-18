@@ -2,6 +2,7 @@ runtime_system = softwareSystem "Runtime" {
 
     group "Core Modules" {
         !include containers/browser_api_adapter.dsl
+        !include containers/dependency_injection.dsl
         !include containers/event_bus.dsl
         !include containers/events_handler.dsl
         !include containers/renderer.dsl
@@ -14,5 +15,11 @@ runtime_system = softwareSystem "Runtime" {
         http_client_container -> event_bus_container "Sends response events"
         event_bus_container -> http_client_container "Sends request events"
         http_client_container -> browser_api_adapter_container "Calls fetch"
+
+        dependency_injection_container -> events_handler_container "Provides dependencies"
+        dependency_injection_container -> http_client_container "Provides dependencies"
+        dependency_injection_container -> renderer_container "Provides dependencies"
+        dependency_injection_container -> browser_api_adapter_container "Provides dependencies"
+
     }
 }
